@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "Andr_Networking_ASM"
