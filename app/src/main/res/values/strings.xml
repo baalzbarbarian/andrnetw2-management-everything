@@ -5,10 +5,10 @@
     <string name="nav_header_title">Full Name</string>
     <string name="nav_header_subtitle">email.abc@mail.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Tài khoản</string>
 
     <string name="menu_home">Trang Chủ</string>
-    <string name="menu_add">Thêm Nội Dung</string>
+    <string name="menu_add">Sản Phẩm</string>
     <string name="menu_searchuser">Tìm Kiếm Thành Viên</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -30,8 +30,42 @@
     <string name="dont_have_an_account">Chưa có tài khoản?</string>
     <string name="sign_in_with_facebook">Đăng nhập với Facebook</string>
     <string name="or">or</string>
-    <string name="txt_reg">Nhập đầy đủ thông tin để trở thành thành viên</string>
+    <string name="txt_reg">Nhập thông tin để trở thành thành viên</string>
     <string name="username">Nhập tài khoản</string>
     <string name="fullname">Họ và tên</string>
     <string name="reg_now">Đăng ký</string>
+
+    <string name="insert_product">Thêm Sản Phẩm</string>
+    <string name="product_name">Tên SP</string>
+    <string name="product_cat">Loại SP</string>
+    <string name="product_price">Giá SP</string>
+    <string name="extended_fab_label">Thêm Sản Phẩm</string>
+    <string name="extended_fab_content_desc">Nhấp để thêm sản phẩm mới</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="titleEditProduct">CẬP NHẬT SẢN PHẨM</string>
+    <string name="update">Cập nhật</string>
+    <string name="btn_cancel">Bỏ qua</string>
+    <string name="dialog_fire_missiles">Xóa sản phẩm?</string>
+    <string name="fire">OK</string>
+    <string name="cancel">Bỏ qua</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="changePassword">Lấy lại mật khẩu</string>
+    <string name="getPass">Xác nhận</string>
+    <string name="newPass">Nhập mật khẩu mới</string>
+    <string name="picture_permission_granted">Cấp quyền truy cập thư viện?</string>
+    <string name="picture_permission_denied">Không cho</string>
+    <string name="picture_permission_available">Picture permission available!</string>
+    <string name="picture_access_required">Yêu cầu cái gì đó.</string>
+    <string name="ok">OK</string>
+    <string name="picture_unavailable">Picture unavailable</string>
+    <string name="titleEditProduct2">Nhập thông tin mới</string>
+    <string name="updateUser">Cập nhật tài khoản</string>
+    <string name="menu3">Menu 3</string>
+    <string name="changePasswordtitle">Xác nhận thông tin</string>
 </resources>

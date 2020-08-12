@@ -1,5 +1,6 @@
 package com.practice.andr_networking_asm.ui.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.practice.andr_networking_asm.DAO.DAO;
+import com.practice.andr_networking_asm.MainActivity;
 import com.practice.andr_networking_asm.R;
+import com.practice.andr_networking_asm.controller.IntentController;
+import com.practice.andr_networking_asm.controller.SessionManager;
+import com.practice.andr_networking_asm.model.mUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,43 +29,75 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+
 public class RegisterActivity extends AppCompatActivity {
 
+    private static String TAG = "Reg Activity";
     private Button btnReg, btnLogin;
-    private EditText edtUsername, edtName, edtEmail, edtPass1, edtPass2;
-    String registerUrl = "http://192.168.1.7/nguyenduchai_pd03241/index.php";
+    private EditText edtUsername, edtName, edtEmail, edtPass;
+    mUser m;
+
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        sessionManager = new SessionManager(this);
+
         initViews();
 
     }
 
     private void initViews() {
-        btnReg = findViewById(R.id.btn_reg);
-        btnLogin = findViewById(R.id.btn_reg);
-        edtUsername = findViewById(R.id.username);
-        edtName = findViewById(R.id.fullname);
-        edtEmail = findViewById(R.id.email);
-        edtPass1 = findViewById(R.id.password1);
-        edtPass2 = findViewById(R.id.password2);
+        btnReg = findViewById(R.id.reg_btnReg);
+        btnLogin = findViewById(R.id.reg_btnBack);
+        edtUsername = findViewById(R.id.reg_edtUsername);
+        edtName = findViewById(R.id.reg_edtName);
+        edtEmail = findViewById(R.id.reg_edtMail);
+        edtPass = findViewById(R.id.reg_edtPass);
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtPass1.getText().toString().equals(edtPass2.getText().toString())){
-                    handlerRegister();
-                }else {
-                    Toast.makeText(RegisterActivity.this, "Mật khẩu không giống nhau!", Toast.LENGTH_SHORT).show();
-                }
+
+                m = new mUser();
+                m.setName(edtName.getText().toString());
+                m.setUsername(edtUsername.getText().toString());
+                m.setMail(edtEmail.getText().toString());
+                m.setPass(edtPass.getText().toString());
+
+                validateData(m);
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }
 
+    private void validateData(mUser m) {
+        int isValid = m.validationData();
+        if (isValid == 0){
+            Toasty.error(this, "Không được để trống!", Toast.LENGTH_SHORT).show();
+        }else if(isValid == -1){
+            Toasty.error(this, "Email không đúng định dạng!", Toast.LENGTH_SHORT).show();
+        }else if(isValid == -2){
+            Toasty.error(this, "Tài khoản và mật khẩu phải hơn 6 ký tự!", Toast.LENGTH_LONG).show();
+        }else {
+            handlerRegister();
+        }
+    }
+
     private void handlerRegister() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, registerUrl,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DAO.url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -69,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RegisterActivity.this, "Volley error", Toast.LENGTH_SHORT).show();
+                Toasty.error(RegisterActivity.this, "Volley Error!", Toast.LENGTH_SHORT).show();
                 Log.d("Volley Error",error.toString());
             }
         })
@@ -78,10 +116,10 @@ public class RegisterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> param=new HashMap<String,String>();
 
-                param.put("username",edtUsername.getText().toString());
-                param.put("fullname",edtName.getText().toString());
-                param.put("email",edtEmail.getText().toString());
-                param.put("password",edtPass1.getText().toString());
+                param.put("username", m.getUsername());
+                param.put("fullname",m.getName());
+                param.put("email", m.getMail());
+                param.put("password", m.getPass());
                 param.put("tag","register");
 
                 return param;
@@ -96,11 +134,12 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(res);
             alert = jsonObject.getString("thanhcong");
             if (Integer.parseInt(alert) == 1) {
-                Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                Toasty.success(this, "Đăng ký thành công!", Toast.LENGTH_SHORT, true).show();
+                sessionManager.setLogin(m.getUsername(), m.getMail(), m.getName(), "", true);
+                IntentController.directinal(RegisterActivity.this, MainActivity.class);
                 finish();
             } else {
-                alert = jsonObject.getString("thongbaoloi");
-                Toast.makeText(this, alert, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Tài khoản đã tồn tại!", Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();

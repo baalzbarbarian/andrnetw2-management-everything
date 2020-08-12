@@ -2,6 +2,7 @@ package com.practice.andr_networking_asm.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +17,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.practice.andr_networking_asm.DAO.DAO;
 import com.practice.andr_networking_asm.MainActivity;
 import com.practice.andr_networking_asm.R;
+import com.practice.andr_networking_asm.controller.IntentController;
+import com.practice.andr_networking_asm.controller.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,16 +31,21 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private TextView txtForgotPass;
     private Button btnLogin;
     private TextView txtReg;
     private EditText edtUsername, edtPass;
-    String url = "http://192.168.1.7/nguyenduchai_pd03241/index.php";
+    private String TAG = "Login Activity";
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        sessionManager = new SessionManager(this);
+
+        txtForgotPass = findViewById(R.id.txtForgot_password);
         edtUsername = findViewById(R.id.username);
         edtPass = findViewById(R.id.password);
 
@@ -57,11 +66,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        txtForgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentController.directinal(LoginActivity.this, ForgotPasswordActivity.class);
+            }
+        });
+
+        checkLogin();
     }
 
     private void handlerLogin(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                url, new Response.Listener<String>() {
+                DAO.url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 handlerAfterLogin(response);
@@ -70,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(LoginActivity.this, "Volley Error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Volley Error: " + error.toString());
             }
         })
         {
@@ -89,21 +107,24 @@ public class LoginActivity extends AppCompatActivity {
         String mess = "";
         String name = "";
         String email = "";
+        String image = "";
+        String username = "";
+
         try {
             JSONObject jsonObject = new JSONObject(res);
             mess = jsonObject.getString("thanhcong");
 
             if(Integer.parseInt(mess) == 1) {
                 JSONObject user = jsonObject.getJSONObject("user_account");
+
+                username = user.getString("username");
                 name = user.getString("fullname");
                 email = user.getString("email");
-
+                image = user.getString("image");
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                i.putExtra("fullname", name);
-                i.putExtra("email", email);
-                startActivity(i);
+                sessionManager.setLogin(username, email, name, image, true);
+                IntentController.directinal(LoginActivity.this, MainActivity.class);
                 finish();
             }else {
                 mess = jsonObject.getString("thongbaoloi");
@@ -113,6 +134,15 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void checkLogin(){
+        if(!sessionManager.check()){
+            return;
+        }else {
+            IntentController.directinal(LoginActivity.this, MainActivity.class);
+            finish();
+        }
     }
 
 }

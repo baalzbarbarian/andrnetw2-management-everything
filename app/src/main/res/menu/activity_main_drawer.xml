@@ -12,9 +12,10 @@
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_baseline_add_to_photos_24"
             android:title="@string/menu_add" />
+
         <item
-            android:id="@+id/nav_searchuser"
+            android:id="@+id/nav_blabla"
             android:icon="@drawable/ic_baseline_find_in_page_24"
-            android:title="@string/menu_searchuser" />
+            android:title="@string/menu3" />
     </group>
 </menu>

@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@color/gray"/>
+        android:drawable="@drawable/bg_login"/>
 
     <item
         android:drawable="@drawable/my_logo"

@@ -3,11 +3,14 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="gray">#03DAC5</color>
+    <color name="gray">#A8A8A8</color>
     <color name="purple">#c86dd7</color>
     <color name="dark_blue">#3023AE</color>
-
+    <color name="white">#fff</color>
     <color name="login_form_details">#ccffffff</color>
     <color name="login_form_details_light">#1affffff</color>
     <color name="login_form_details_medium">#66ffffff</color>
+    <color name="startBg">#108DB3</color>
+    <color name="endBg">#89CFF4</color>
+
 </resources>

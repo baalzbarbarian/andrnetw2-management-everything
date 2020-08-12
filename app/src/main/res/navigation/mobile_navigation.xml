@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_add"
-        android:name="com.practice.andr_networking_asm.ui.addnewcontent.AddNewContentFragment"
+        android:name="com.practice.andr_networking_asm.ui.product_manager.ProductManagementFragment"
         android:label="@string/menu_add"
         tools:layout="@layout/fragment_add_new_content" />
-
     <fragment
-        android:id="@+id/nav_searchuser"
-        android:name="com.practice.andr_networking_asm.ui.searchuser.SearchUserFragment"
-        android:label="@string/menu_searchuser"
-        tools:layout="@layout/fragment_search_user" />
+        android:id="@+id/nav_blabla"
+        android:name="com.practice.andr_networking_asm.ui.Menu3.Menu3Fragment"
+        tools:layout="@layout/fragment_menu3"
+        android:label="Thêm gì đó" />
+
 </navigation>
